@@ -114,7 +114,7 @@ public class Table {
             @Override
             public void actionPerformed(ActionEvent e) {
                 boardDirection = boardDirection.opposite();
-                boardPanel.drawBoard(chessBoard);;
+                boardPanel.drawBoard(chessBoard);
             }
         });
         preferencesMenu.add(flipBoardMenuItem);
@@ -321,6 +321,11 @@ public class Table {
         private void highlightLegals(final Board board){
             if(highlightLegalMoves){
                 for(final Move move : pieceLegalMoves(board)){
+                    MoveTransition transition = board.currentPlayer().makeMove(move);
+                    if(!transition.getMoveStatus().isDone()){
+                        continue;
+                    }
+
                     if(move.getDestinationCoordinate() == this.tileId){
                         try{
                             add(new JLabel(new ImageIcon(ImageIO.read(new File("art/misc/green_dot.png")))));
